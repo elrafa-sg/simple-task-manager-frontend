@@ -38,11 +38,11 @@ const TableTarefas = (props: TableTarefasProps) => {
                         <td className='pl-2 font-mono text-black border border-black text-center'>{tarefa.prioridade}</td>
                         <td className='border border-black'>
                             <div className='flex items-center justify-between gap-6 px-4'>
-                                <button className='text-blue-600' onClick={() => console.log('editar ', tarefa.id)}>
+                                <button className='text-blue-600 outline-none' onClick={() => console.log('editar ', tarefa.id)}>
                                     <FaRegPenToSquare size={22} />
                                 </button>
 
-                                <button className='text-red-600' onClick={() => console.log("deletar ", tarefa.id)}>
+                                <button className='text-red-600 outline-none' onClick={() => console.log("deletar ", tarefa.id)}>
                                     <FaTrash size={22} />
                                 </button>
                             </div>
