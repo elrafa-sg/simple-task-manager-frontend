@@ -1,5 +1,7 @@
 'use client'
+import { TarefaService } from '@/services/TarefaService'
 import { FaRegPenToSquare, FaTrash } from 'react-icons/fa6'
+import { useRouter } from 'next/navigation'
 
 export interface Tarefa {
     id: string,
@@ -17,6 +19,18 @@ interface TableTarefasProps {
 }
 
 const TableTarefas = (props: TableTarefasProps) => {
+    const router = useRouter()
+
+    async function deletarTarefa (idTareafa: string) {
+        const deletarTarefaResponse = await TarefaService.deletarTarefa(idTareafa)
+        if (deletarTarefaResponse.status == 200) {
+            router.refresh()
+        }
+        else {
+            // tratar erros
+        }
+    }
+
     return (
         <table className='w-full border-collapse shadow-lg'>
             <thead className='bg-slate-800'>
@@ -42,7 +56,7 @@ const TableTarefas = (props: TableTarefasProps) => {
                                     <FaRegPenToSquare size={22} />
                                 </button>
 
-                                <button className='text-red-600 outline-none' onClick={() => console.log("deletar ", tarefa.id)}>
+                                <button className='text-red-600 outline-none' onClick={() => deletarTarefa(tarefa.id)}>
                                     <FaTrash size={22} />
                                 </button>
                             </div>
