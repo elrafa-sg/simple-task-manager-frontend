@@ -37,7 +37,7 @@ export default function Home () {
                 <h2 className='font-mono font-bold text-lg'>APPBAR TEMPORARIA</h2>
             </div>
 
-            <div className='w-1/3 sm:w-1/3'>
+            <div className='w-3/5'>
                 <TableTarefas listaTarefas={tarefas}
                     editFunction={(tarefa: Tarefa) => {
                         setModalTarefaState({ mode: 'edit', open: true, tarefa: tarefa })
@@ -64,7 +64,7 @@ export default function Home () {
             {modalTarefaState.open && (
                 <ModalTarefa mode={modalTarefaState.mode} tarefa={modalTarefaState.tarefa}
                     closeFunction={() => setModalTarefaState({ ...modalTarefaState, open: false })}
-                    confirmFunction={() => console.log('confirmado')}
+                    confirmFunction={(tarefa: Tarefa) => TarefaService.atualizarTarefa(tarefa)}
                 />
             )}
 

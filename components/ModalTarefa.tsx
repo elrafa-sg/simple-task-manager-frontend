@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { FaXmark } from 'react-icons/fa6'
+import { format } from 'date-fns'
 
 import { Tarefa } from '@/models/Tarefa'
 
@@ -12,7 +13,7 @@ interface ModalTarefaProps {
 }
 
 const ModalTarefa = (props: ModalTarefaProps) => {
-    const [tarefa, setTarefa] = useState<Tarefa>(props.tarefa || { titulo: '', descricao: '', prioridade: 0 })
+    const [tarefa, setTarefa] = useState<Tarefa>(props.tarefa || { titulo: '', descricao: '', prioridade: 0, vencimento: new Date() })
 
     return (
         <div className='absolute z-40 h-screen w-screen flex flex-col items-center bg-slate-950 bg-opacity-60'>
@@ -45,8 +46,8 @@ const ModalTarefa = (props: ModalTarefaProps) => {
 
                     <div className='flex items-center justify-between gap-2 w-50'>
                         <label htmlFor='inputVencimento' className='font-bold text-black'>Vencimento:</label>
-                        <input name='inputVencimento' type='date' className='w-60 outline-none bg-slate-50 text-slate-800 p-2 rounded-sm shadow-sm'
-                            value={tarefa.vencimento?.toString()}
+                        <input name='inputVencimento' type='datetime-local' className='w-60 outline-none bg-slate-50 text-slate-800 p-2 rounded-sm shadow-sm'
+                            value={format(new Date(tarefa.vencimento), 'yyyy-MM-dd hh:mm')}
                             onChange={(e) => setTarefa({ ...tarefa, vencimento: new Date(e.target.value) })}
                         />
                     </div>
@@ -58,7 +59,6 @@ const ModalTarefa = (props: ModalTarefaProps) => {
                             onChange={(e) => setTarefa({ ...tarefa, prioridade: parseInt(e.target.value) })}
                         />
                     </div>
-
                 </div>
 
                 {/* FOOTER */}
@@ -71,7 +71,7 @@ const ModalTarefa = (props: ModalTarefaProps) => {
                     </button>
 
                     <button className={`outline-none rounded-sm p-2  ${props.mode == 'edit' ? 'bg-blue-600' : 'bg-green-600'}`}
-                        onClick={() => props.confirmFunction()}
+                        onClick={() => props.confirmFunction(tarefa)}
                     >
                         <span className='text-lg text-white font-mono font-bold'>
                             {props.mode == 'create' ? 'Cadastrar' : 'Atualizar'}

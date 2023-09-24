@@ -1,6 +1,6 @@
 'use client'
 import { FaRegPenToSquare, FaTrash } from 'react-icons/fa6'
-
+import format from 'date-fns/format'
 import { Tarefa } from '@/models/Tarefa'
 
 interface TableTarefasProps {
@@ -26,10 +26,12 @@ const TableTarefas = (props: TableTarefasProps) => {
             <tbody className='bg-slate-50'>
                 {props.listaTarefas.map(tarefa => (
                     <tr key={tarefa.id}>
-                        <td className='pl-2 font-mono text-black border border-black'>{tarefa.titulo}</td>
-                        <td className='pl-2 font-mono text-black border border-black'>{tarefa.descricao}</td>
-                        <td className='pl-2 font-mono text-black border border-black'>{tarefa.vencimento?.toString()}</td>
-                        <td className='pl-2 font-mono text-black border border-black text-center'>{tarefa.prioridade}</td>
+                        <td className='p-2 font-mono text-black border border-black'>{tarefa.titulo}</td>
+                        <td className='p-2 font-mono text-black border border-black'>{tarefa.descricao}</td>
+                        <td className='p-2 font-mono text-black border border-black'>
+                            {format(new Date(tarefa.vencimento), 'dd/MM/yyyy hh:mm')}
+                        </td>
+                        <td className='p-2 font-mono text-black border border-black text-center'>{tarefa.prioridade}</td>
                         <td className='border border-black'>
                             <div className='flex items-center justify-between gap-6 px-4'>
                                 <button className='text-blue-600 outline-none' onClick={() => props.editFunction(tarefa)}>
