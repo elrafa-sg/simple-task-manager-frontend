@@ -71,7 +71,7 @@ const ModalTarefa = (props: ModalTarefaProps) => {
                     </button>
 
                     <button className={`outline-none rounded-sm p-2  ${props.mode == 'edit' ? 'bg-blue-600' : 'bg-green-600'}`}
-                        onClick={() => props.confirmFunction(tarefa)}
+                        onClick={() => props.confirmFunction(tarefa, props.mode)}
                     >
                         <span className='text-lg text-white font-mono font-bold'>
                             {props.mode == 'create' ? 'Cadastrar' : 'Atualizar'}

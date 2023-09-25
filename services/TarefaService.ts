@@ -19,6 +19,11 @@ class TarefaService {
         const atualizarTarefaResponse = await apiClient.put(`${BASE_PATH}/`, tarefa)
         return atualizarTarefaResponse
     }
+
+    static async criarTarefa (tarefa: Tarefa) {
+        const criarTarefaResponse = await apiClient.post(`${BASE_PATH}/`, tarefa)
+        return criarTarefaResponse
+    }
 }
 
 export { TarefaService }

@@ -31,6 +31,25 @@ export default function Home () {
         loadListaTarefas()
     }, [])
 
+    async function confirmFunction (tarefa: Tarefa, mode: string) {
+        let apiResponse = null
+
+        switch (mode) {
+            case 'edit':
+                apiResponse = await TarefaService.atualizarTarefa(tarefa)
+                break
+            case 'create':
+                apiResponse = await TarefaService.criarTarefa(tarefa)
+        }
+
+        if (apiResponse?.status == 200) {
+
+        }
+        else {
+            // tratar erros
+        }
+    }
+
     return (
         <main className="flex flex-col min-h-screen items-center bg-slate-200 w-screen overflow-hidden">
             <div className='w-full bg-slate-800 h-16 flex items-center pl-10 mb-14'>
@@ -64,7 +83,7 @@ export default function Home () {
             {modalTarefaState.open && (
                 <ModalTarefa mode={modalTarefaState.mode} tarefa={modalTarefaState.tarefa}
                     closeFunction={() => setModalTarefaState({ ...modalTarefaState, open: false })}
-                    confirmFunction={(tarefa: Tarefa) => TarefaService.atualizarTarefa(tarefa)}
+                    confirmFunction={confirmFunction}
                 />
             )}
 
