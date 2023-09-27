@@ -1,8 +1,14 @@
 import { useEffect } from 'react'
 
+enum ToastType {
+    'success',
+    'danger',
+    'warning',
+    'info'
+}
 interface ToastProps {
     message: string,
-    type: 'success' | 'danger' | 'warning' | 'info',
+    type: ToastType,
     closeFunction: Function,
     timeout: number
 }
@@ -12,16 +18,16 @@ const Toast = (props: ToastProps) => {
     function getToastColors () {
         let toastColors = ''
         switch (props.type) {
-            case 'success':
+            case ToastType.success:
                 toastColors = 'bg-green-400'
                 break
-            case 'danger':
+            case ToastType.danger:
                 toastColors = 'bg-red-400'
                 break
-            case 'warning':
+            case ToastType.warning:
                 toastColors = 'bg-yellow-400'
                 break
-            case 'info':
+            case ToastType.info:
                 toastColors = 'bg-blue-400'
                 break
         }
@@ -47,4 +53,4 @@ const Toast = (props: ToastProps) => {
     )
 }
 
-export { Toast }
+export { Toast, type ToastProps, ToastType }
