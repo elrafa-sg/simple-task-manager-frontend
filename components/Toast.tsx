@@ -36,7 +36,7 @@ const Toast = (props: ToastProps) => {
     }, [props])
 
     return (
-        <div className='absolute z-40 w-full flex justify-end pr-4 pt-4'>
+        <div className='absolute z-50 w-full flex justify-end pr-4 pt-4'>
             <div className={`flex flex-col p-2 text-white font-mono ${getToastColors()} 
             rounded-sm min-w-[200px]`}>
                 <div className='flex justify-between items-center'>
