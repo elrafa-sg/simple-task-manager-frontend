@@ -5,24 +5,44 @@ import { Tarefa } from '@/models/Tarefa'
 const BASE_PATH = '/tarefa'
 
 class TarefaService {
-    static async getListaTarefas () {
-        const listaTarefasResponse = await apiClient.get(`${BASE_PATH}/`)
-        return listaTarefasResponse
+    static async listarTarefas () {
+        return apiClient.get(`${BASE_PATH}/`)
+            .then(apiResponse => {
+                return apiResponse
+            })
+            .catch(apiResponseError => {
+                return apiResponseError.response
+            })
     }
 
     static async deletarTarefa (idTarefa: string) {
-        const deletarTarefaResponse = await apiClient.delete(`${BASE_PATH}/`, { data: { idTarefa: idTarefa } })
-        return deletarTarefaResponse
+        return apiClient.delete(`${BASE_PATH}/`, { data: { idTarefa: idTarefa } })
+            .then(apiResponse => {
+                return apiResponse
+            })
+            .catch(apiErrorResponse => {
+                return apiErrorResponse.response
+            })
     }
 
     static async atualizarTarefa (tarefa: Tarefa) {
-        const atualizarTarefaResponse = await apiClient.put(`${BASE_PATH}/`, tarefa)
-        return atualizarTarefaResponse
+        return apiClient.put(`${BASE_PATH}/`, tarefa)
+            .then(apiResponse => {
+                return apiResponse
+            })
+            .catch(apiErrorResponse => {
+                return apiErrorResponse.response
+            })
     }
 
     static async criarTarefa (tarefa: Tarefa) {
-        const criarTarefaResponse = await apiClient.post(`${BASE_PATH}/`, tarefa)
-        return criarTarefaResponse
+        return apiClient.post(`${BASE_PATH}/`, tarefa)
+            .then(apiResponse => {
+                return apiResponse
+            })
+            .catch(apiErrorResponse => {
+                return apiErrorResponse.response
+            })
     }
 }
 

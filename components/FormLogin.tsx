@@ -1,24 +1,12 @@
-'use client'
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { UsuarioService } from '../services/UsuarioService'
 
-const FormLogin = () => {
+interface FormLoginProps {
+    loginFunction: Function
+}
+
+const FormLogin = (props: FormLoginProps) => {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
-
-    const router = useRouter()
-
-    async function tryLogin (e: any) {
-        e.preventDefault()
-        // todo - transformar em action
-        const loginResponse = await UsuarioService.login(email, senha)
-        if (loginResponse.status == 200) {
-            router.push('/home')
-        } else {
-            // tratar erros
-        }
-    }
 
     return (
         <form className='flex flex-col gap-6 md:w-1/4 w-5/6 h-auto bg-slate-800 shadow-lg p-6 rounded-sm'>
@@ -42,7 +30,7 @@ const FormLogin = () => {
             </div>
 
             <button className='bg-blue-600 outline-none rounded-sm p-2'
-                onClick={e => tryLogin(e)}
+                onClick={(e) => { e.preventDefault(); props.loginFunction(email, senha) }}
             >
                 <span className='text-lg text-white font-mono font-bold'>Entrar</span>
             </button>
