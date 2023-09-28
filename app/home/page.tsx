@@ -1,12 +1,12 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { FaCirclePlus } from 'react-icons/fa6'
 
 import { TableTarefas } from '@/components/TableTarefas';
 import { ModalTarefa } from '@/components/ModalTarefa';
 import { TarefaService } from '@/services/TarefaService';
 import { Tarefa } from '@/models/Tarefa';
-import { Toast, ToastProps, ToastType } from '@/components/Toast';
+import { Toast, ToastType } from '@/components/Toast';
 
 interface ModalTarefaState {
     mode: 'create' | 'edit',
@@ -26,28 +26,6 @@ export default function Home () {
     const [toastState, setToastState] = useState<ToastState>({ type: ToastType.success, open: false, message: '', timeout: 3500 })
 
     const [tarefas, setTarefas] = useState([])
-
-    async function loadListaTarefas () {
-        const apiResponse = await TarefaService.listarTarefas()
-        if (apiResponse.status == 200) {
-            setTarefas(apiResponse.data)
-        } else {
-            setTarefas([])
-            setToastState({
-                open: true,
-                message: apiResponse?.data.message,
-                type: ToastType.danger, timeout: 3500
-            })
-        }
-    }
-
-    useEffect(() => {
-        loadListaTarefas()
-    }, [])
-
-    useEffect(() => {
-        loadListaTarefas()
-    }, [toastState.open])
 
     function showToast (message: string, type: ToastType) {
         setToastState({
@@ -70,39 +48,41 @@ export default function Home () {
 
         if (apiResponse?.status == 200) {
             setModalTarefaState({ ...modalTarefaState, open: false })
-
-            setToastState({
-                open: true,
-                message: `Tarefa ${mode == 'create' ? 'criada' : 'atualizada'} com sucesso!`,
-                type: ToastType.success, timeout: 3500
-            })
+            showToast(`Tarefa ${mode == 'create' ? 'criada' : 'atualizada'} com sucesso!`, ToastType.success)
         }
         else {
-            setToastState({
-                open: true,
-                message: apiResponse?.data.message,
-                type: ToastType.danger, timeout: 3500
-            })
+            showToast(apiResponse?.data.message, ToastType.danger)
         }
     }
 
     async function deleteFunction (idTarefa: string) {
         const apiResponse = await TarefaService.deletarTarefa(idTarefa)
         if (apiResponse.status == 200) {
-            setToastState({
-                open: true,
-                message: `Tarefa deletada com sucesso!`,
-                type: ToastType.success, timeout: 3500
-            })
+            showToast(`Tarefa deletada com sucesso!`, ToastType.success)
         }
         else {
-            setToastState({
-                open: true,
-                message: apiResponse?.data.message,
-                type: ToastType.danger, timeout: 3500
-            })
+            showToast(apiResponse?.data.message, ToastType.danger)
         }
     }
+
+    const loadListaTarefas = useCallback(async () => {
+        const apiResponse = await TarefaService.listarTarefas()
+        if (apiResponse.status == 200) {
+            setTarefas(apiResponse.data)
+        } else {
+            setTarefas([])
+            showToast(apiResponse?.data.message, ToastType.danger)
+        }
+    }, [])
+
+    useEffect(() => {
+        loadListaTarefas()
+    }, [loadListaTarefas])
+
+    useEffect(() => {
+        loadListaTarefas()
+    }, [toastState.open, loadListaTarefas])
+
 
     return (
         <main className="flex flex-col min-h-screen items-center bg-slate-200 w-screen overflow-hidden">
