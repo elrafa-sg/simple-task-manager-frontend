@@ -1,3 +1,4 @@
+'use client'
 import { GoogleAuth } from '@/utils/googleAuth'
 
 export default function Index () {
@@ -7,8 +8,15 @@ export default function Index () {
         <main className="flex min-h-screen flex-col items-center pt-20 bg-slate-200">
 
             <button onClick={async () => {
-                const creds = await googleAuth.askPermission()
-                console.log('creds response -> ', creds)
+                googleAuth.askPermission()
+                    .then(permissionResponse => {
+                        // enviar para salvar no banco
+                        console.log("calendar token ", permissionResponse.access_token)
+                    })
+                    .catch(permissionErrorResponse => {
+                        console.log("permissionErrorResponse ", permissionErrorResponse)
+                        // informar ao usuario
+                    })
             }}>
                 GOOGLE AUTH
             </button>
