@@ -8,6 +8,8 @@ class GoogleAuth {
     }
 
     loadClient () {
+        console.log('env', process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID)
+
         const scriptGoogle: HTMLScriptElement = document.createElement("script");
         scriptGoogle.src = ScriptGoogleSource;
         scriptGoogle.async = true;
