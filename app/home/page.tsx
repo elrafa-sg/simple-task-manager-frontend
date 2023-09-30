@@ -7,6 +7,9 @@ import { ModalTarefa } from '@/components/ModalTarefa';
 import { TarefaService } from '@/services/TarefaService';
 import { Tarefa } from '@/models/Tarefa';
 import { Toast, ToastType } from '@/components/Toast';
+import { LocalStorage } from '@/utils/localStorage';
+import { GoogleAuth } from '@/utils/googleAuth';
+import { ModalGoogleAuth } from '@/components/ModalGoogleAuth';
 
 interface ModalTarefaState {
     mode: 'create' | 'edit',
@@ -24,8 +27,9 @@ interface ToastState {
 export default function Home () {
     const [modalTarefaState, setModalTarefaState] = useState<ModalTarefaState>({ mode: 'create', open: false })
     const [toastState, setToastState] = useState<ToastState>({ type: ToastType.success, open: false, message: '', timeout: 3500 })
-
     const [tarefas, setTarefas] = useState([])
+
+    const [modalGoogleAuthOpen, setModalGoogleAuthOpen] = useState(false)
 
     function showToast (message: string, type: ToastType) {
         setToastState({
@@ -83,6 +87,10 @@ export default function Home () {
         loadListaTarefas()
     }, [toastState.open, loadListaTarefas])
 
+    useEffect(() => {
+        const googleToken = LocalStorage.getGoogleCalendarToken()
+        setModalGoogleAuthOpen(!googleToken)
+    }, [])
 
     return (
         <main className="flex flex-col min-h-screen items-center bg-slate-200 w-screen overflow-hidden">
@@ -120,6 +128,13 @@ export default function Home () {
                 />
             )}
 
+            {
+                modalGoogleAuthOpen && (
+                    <ModalGoogleAuth closeFunction={() => setModalGoogleAuthOpen(false)}
+                        feedbackFunction={showToast}
+                    />
+                )
+            }
         </main>
     )
 }
