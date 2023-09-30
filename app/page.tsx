@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { FormLogin } from '@/components/FormLogin'
 import { Toast, ToastType } from '@/components/Toast'
 import { UsuarioService } from '@/services/UsuarioService'
+import { LocalStorage } from '@/utils/localStorage'
 
 interface ToastState {
   type: ToastType,
@@ -20,6 +21,7 @@ export default function Index () {
   async function tryLogin (email: string, senha: string) {
     const apiResponse = await UsuarioService.login(email, senha)
     if (apiResponse.status == 200) {
+      LocalStorage.setUserToken(apiResponse.data.access_token)
       router.push('/home')
     } else {
       setToastState({
