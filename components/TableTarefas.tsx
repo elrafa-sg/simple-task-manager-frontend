@@ -38,7 +38,7 @@ const TableTarefas = (props: TableTarefasProps) => {
                                     <FaRegPenToSquare size={22} />
                                 </button>
 
-                                <button className='text-red-600 outline-none' onClick={() => props.deleteFunction(tarefa.id!)}>
+                                <button className='text-red-600 outline-none' onClick={() => props.deleteFunction(tarefa)}>
                                     <FaTrash size={22} />
                                 </button>
                             </div>
