@@ -1,3 +1,4 @@
+import { LocalStorage } from '@/utils/localStorage'
 import { apiClient } from './api'
 
 import { Tarefa } from '@/models/Tarefa'
@@ -15,34 +16,26 @@ class TarefaService {
             })
     }
 
-    static async deletarTarefa (idTarefa: string) {
-        return apiClient.delete(`${BASE_PATH}/`, { data: { idTarefa: idTarefa } })
-            .then(apiResponse => {
-                return apiResponse
-            })
-            .catch(apiErrorResponse => {
-                return apiErrorResponse.response
-            })
+    static async deletarTarefa (tarefa: Tarefa) {
+        return apiClient.delete(`${BASE_PATH}/`, {
+            data: { tarefa: tarefa, googleCalendarToken: LocalStorage.getGoogleCalendarToken() }
+        })
+            .then(apiResponse => apiResponse)
+            .catch(apiErrorResponse => apiErrorResponse.response)
     }
 
     static async atualizarTarefa (tarefa: Tarefa) {
-        return apiClient.put(`${BASE_PATH}/`, tarefa)
-            .then(apiResponse => {
-                return apiResponse
-            })
-            .catch(apiErrorResponse => {
-                return apiErrorResponse.response
-            })
+        return apiClient.put(`${BASE_PATH}/`,
+            { tarefa: tarefa, googleCalendarToken: LocalStorage.getGoogleCalendarToken() }
+        )
+            .then(apiResponse => apiResponse)
+            .catch(apiErrorResponse => apiErrorResponse.response)
     }
 
     static async criarTarefa (tarefa: Tarefa) {
-        return apiClient.post(`${BASE_PATH}/`, tarefa)
-            .then(apiResponse => {
-                return apiResponse
-            })
-            .catch(apiErrorResponse => {
-                return apiErrorResponse.response
-            })
+        return apiClient.post(`${BASE_PATH}/`, { tarefa: tarefa, googleCalendarToken: LocalStorage.getGoogleCalendarToken() })
+            .then(apiResponse => apiResponse)
+            .catch(apiErrorResponse => apiErrorResponse.response)
     }
 }
 

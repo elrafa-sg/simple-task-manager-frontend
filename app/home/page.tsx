@@ -53,16 +53,18 @@ export default function Home () {
         if (apiResponse?.status == 200) {
             setModalTarefaState({ ...modalTarefaState, open: false })
             showToast(`Tarefa ${mode == 'create' ? 'criada' : 'atualizada'} com sucesso!`, ToastType.success)
+            loadListaTarefas()
         }
         else {
             showToast(apiResponse?.data.message, ToastType.danger)
         }
     }
 
-    async function deleteFunction (idTarefa: string) {
-        const apiResponse = await TarefaService.deletarTarefa(idTarefa)
+    async function deleteFunction (tarefa: Tarefa) {
+        const apiResponse = await TarefaService.deletarTarefa(tarefa)
         if (apiResponse.status == 200) {
             showToast(`Tarefa deletada com sucesso!`, ToastType.success)
+            loadListaTarefas()
         }
         else {
             showToast(apiResponse?.data.message, ToastType.danger)
@@ -82,10 +84,6 @@ export default function Home () {
     useEffect(() => {
         loadListaTarefas()
     }, [loadListaTarefas])
-
-    useEffect(() => {
-        loadListaTarefas()
-    }, [toastState.open, loadListaTarefas])
 
     useEffect(() => {
         const googleToken = LocalStorage.getGoogleCalendarToken()
