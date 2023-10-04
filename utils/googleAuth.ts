@@ -1,7 +1,7 @@
+require('dotenv').config();
 import { LocalStorage } from './localStorage';
 import { compareAsc, parseISO } from 'date-fns';
 const ScriptGoogleSource: string = "https://accounts.google.com/gsi/client";
-
 class GoogleAuth {
     tokenClient: any = null;
 

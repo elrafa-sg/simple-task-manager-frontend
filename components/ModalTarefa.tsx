@@ -14,7 +14,7 @@ interface ModalTarefaProps {
 }
 
 const ModalTarefa = (props: ModalTarefaProps) => {
-    const [tarefa, setTarefa] = useState<Tarefa>(props.tarefa || { titulo: '', descricao: '', prioridade: 0, vencimento: new Date() })
+    const [tarefa, setTarefa] = useState<Tarefa>(props.tarefa || { titulo: '', descricao: '', prioridade: 'baixa', vencimento: new Date() })
     const [validationErrors, setValidationErrors] = useState<[{ field: string, message: string }]>();
 
     const handleSubmit = () => {
@@ -93,12 +93,15 @@ const ModalTarefa = (props: ModalTarefaProps) => {
                     </div>
 
                     <div className='flex flex-col'>
-                        <div className='flex justify-between gap-2'>
+                        <div className='flex items-center justify-between gap-2'>
                             <label htmlFor='inputPrioridade' className='font-bold text-black'>Prioridade:</label>
-                            <input name='inputPrioridade' type='number' className='w-60 outline-none bg-slate-50 text-slate-800 p-2 rounded-sm shadow-sm'
-                                value={tarefa?.prioridade}
-                                onChange={(e) => setTarefa({ ...tarefa, prioridade: parseInt(e.target.value) })}
-                            />
+                            <select name='inputPrioridade' className='w-60 outline-none bg-slate-50 text-slate-800 p-2 rounded-sm shadow-sm'
+                                onChange={(e) => setTarefa({ ...tarefa, prioridade: e.target.value })}
+                            >
+                                {['baixa', 'media', 'alta'].map((prioridade: string, index) => (
+                                    <option key={index} value={prioridade}>{prioridade}</option>
+                                ))}
+                            </select>
                         </div>
                         {validationErrors?.filter(x => x.field == 'prioridade').map((validationError: any, index) => (
                             <p key={index} className='text-red-500 font-bold pt-1'>{validationError.message}</p>

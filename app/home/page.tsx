@@ -7,7 +7,6 @@ import { ModalTarefa } from '@/components/ModalTarefa';
 import { TarefaService } from '@/services/TarefaService';
 import { Tarefa } from '@/models/Tarefa';
 import { Toast, ToastType } from '@/components/Toast';
-import { LocalStorage } from '@/utils/localStorage';
 import { ModalGoogleAuth } from '@/components/ModalGoogleAuth';
 import { GoogleAuth } from '@/utils/googleAuth';
 
