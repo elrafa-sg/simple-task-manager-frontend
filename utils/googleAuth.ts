@@ -1,3 +1,5 @@
+import axios from 'axios'
+import { LocalStorage } from './localStorage';
 const ScriptGoogleSource: string = "https://accounts.google.com/gsi/client";
 
 class GoogleAuth {
@@ -21,6 +23,23 @@ class GoogleAuth {
                 callback: () => { },
             });
         };
+    }
+
+    async googleTokenValido (): Promise<boolean> {
+        let googleTokenValido = true
+        const BASE_PATH = 'https://oauth2.googleapis.com'
+
+        const googleTokenSalvo = LocalStorage.getGoogleCalendarToken()
+        if (!googleTokenSalvo) {
+            googleTokenValido = false
+        }
+        else {
+            const apiResponse = await axios.get(`${BASE_PATH}/tokeninfo?id_token=${googleTokenSalvo}`)
+            if (apiResponse.data.error == 'invalid_token') {
+                googleTokenValido = false
+            }
+        }
+        return googleTokenValido
     }
 
     async askPermission (): Promise<any> {
