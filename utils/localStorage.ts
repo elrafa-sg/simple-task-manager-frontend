@@ -16,9 +16,18 @@ class LocalStorage {
         return JSON.parse(localStorage.getItem("googleCalendarToken")!);
     }
 
+    static setGoogleCalendarTokenExpiration (dataExpiracao: Date) {
+        localStorage.setItem("googleCalendarTokenExpiration", JSON.stringify(dataExpiracao));
+    }
+
+    static getGoogleCalendarTokenExpiration () {
+        return JSON.parse(localStorage.getItem("googleCalendarTokenExpiration")!);
+    }
+
     static clearTokens () {
         localStorage.removeItem("userToken");
         localStorage.removeItem("googleCalendarToken");
+        localStorage.removeItem("googleCalendarTokenExpiration")
     };
 
 }
