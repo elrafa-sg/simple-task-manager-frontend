@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { LocalStorage } from './localStorage';
+import { compareAsc, parseISO } from 'date-fns';
 const ScriptGoogleSource: string = "https://accounts.google.com/gsi/client";
 
 class GoogleAuth {
@@ -27,20 +27,22 @@ class GoogleAuth {
 
     async googleTokenValido (): Promise<boolean> {
         let googleTokenValido = true
-        const BASE_PATH = 'https://oauth2.googleapis.com'
 
-        const googleTokenSalvo = LocalStorage.getGoogleCalendarToken()
-        if (!googleTokenSalvo) {
+        const dataAtual = new Date()
+        const dataExpiracao = LocalStorage.getGoogleCalendarTokenExpiration()
+
+        if (!dataExpiracao) {
             googleTokenValido = false
         }
         else {
-            const apiResponse = await axios.get(`${BASE_PATH}/tokeninfo?id_token=${googleTokenSalvo}`)
-            if (apiResponse.data.error == 'invalid_token') {
+            if (compareAsc(dataAtual, parseISO(dataExpiracao)) == 1) {
                 googleTokenValido = false
             }
         }
+
         return googleTokenValido
     }
+
 
     async askPermission (): Promise<any> {
         return new Promise((resolve, reject) => {
