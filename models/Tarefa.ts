@@ -3,7 +3,7 @@ interface Tarefa {
     titulo: string,
     descricao: string,
     vencimento: Date,
-    prioridade: number,
+    prioridade: string,
     idUsuario?: number,
     createdAt?: Date,
     updatedAt?: Date
