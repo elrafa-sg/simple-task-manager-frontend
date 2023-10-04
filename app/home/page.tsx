@@ -8,8 +8,8 @@ import { TarefaService } from '@/services/TarefaService';
 import { Tarefa } from '@/models/Tarefa';
 import { Toast, ToastType } from '@/components/Toast';
 import { LocalStorage } from '@/utils/localStorage';
-import { GoogleAuth } from '@/utils/googleAuth';
 import { ModalGoogleAuth } from '@/components/ModalGoogleAuth';
+import { GoogleAuth } from '@/utils/googleAuth';
 
 interface ModalTarefaState {
     mode: 'create' | 'edit',
@@ -77,7 +77,7 @@ export default function Home () {
             setTarefas(apiResponse.data)
         } else {
             setTarefas([])
-            showToast(apiResponse?.data.message, ToastType.danger)
+            showToast(apiResponse?.data?.message, ToastType.danger)
         }
     }, [])
 
@@ -85,9 +85,16 @@ export default function Home () {
         loadListaTarefas()
     }, [loadListaTarefas])
 
+    async function validarGoogleToken () {
+        const googleAuth = new GoogleAuth()
+        const googleTokenValido = await googleAuth.googleTokenValido()
+        if (!googleTokenValido) {
+            setModalGoogleAuthOpen(true)
+        }
+    }
+
     useEffect(() => {
-        const googleToken = LocalStorage.getGoogleCalendarToken()
-        setModalGoogleAuthOpen(!googleToken)
+        validarGoogleToken()
     }, [])
 
     return (
