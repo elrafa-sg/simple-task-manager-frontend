@@ -5,9 +5,15 @@ import { Tarefa } from '@/models/Tarefa'
 
 const BASE_PATH = '/tarefa'
 
+interface ListarTarefasFilter {
+    dataInicial: string,
+    dataFinal: string,
+    prioridade: string
+}   
 class TarefaService {
-    static async listarTarefas () {
-        return apiClient.get(`${BASE_PATH}/`)
+    static async listarTarefas (filter: ListarTarefasFilter) {
+        const { dataInicial, dataFinal, prioridade } = filter
+        return apiClient.get(`${BASE_PATH}?dataInicial=${dataInicial}&dataFinal=${dataFinal}&prioridade=${prioridade}`)
             .then(apiResponse => {
                 return apiResponse
             })
