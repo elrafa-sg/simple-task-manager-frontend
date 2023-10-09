@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import { useSearchParams } from 'next/navigation';
 import { FaCirclePlus } from 'react-icons/fa6'
 
 import { TableTarefas } from '@/components/TableTarefas';
@@ -9,6 +10,7 @@ import { Tarefa } from '@/models/Tarefa';
 import { Toast, ToastType } from '@/components/Toast';
 import { ModalGoogleAuth } from '@/components/ModalGoogleAuth';
 import { GoogleAuth } from '@/utils/googleAuth';
+import { FiltroTarefas } from '@/components/FiltroTarefas';
 
 interface ModalTarefaState {
     mode: 'create' | 'edit',
@@ -24,10 +26,12 @@ interface ToastState {
 }
 
 export default function Home () {
+    const searchParams = useSearchParams()
+
     const [modalTarefaState, setModalTarefaState] = useState<ModalTarefaState>({ mode: 'create', open: false })
     const [toastState, setToastState] = useState<ToastState>({ type: ToastType.success, open: false, message: '', timeout: 3500 })
-    const [tarefas, setTarefas] = useState([])
 
+    const [tarefas, setTarefas] = useState([])
     const [modalGoogleAuthOpen, setModalGoogleAuthOpen] = useState(false)
 
     function showToast (message: string, type: ToastType) {
@@ -71,14 +75,18 @@ export default function Home () {
     }
 
     const loadListaTarefas = useCallback(async () => {
-        const apiResponse = await TarefaService.listarTarefas()
+        const dataInicial = searchParams.get('dataInicial') ?? ''
+        const dataFinal = searchParams.get('dataFinal') ?? ''
+        const prioridade = searchParams.get('prioridade') ?? ''
+
+        const apiResponse = await TarefaService.listarTarefas({ dataInicial, dataFinal, prioridade })
         if (apiResponse.status == 200) {
             setTarefas(apiResponse.data)
         } else {
             setTarefas([])
             showToast(apiResponse?.data?.message, ToastType.danger)
         }
-    }, [])
+    }, [searchParams])
 
     useEffect(() => {
         loadListaTarefas()
@@ -109,8 +117,9 @@ export default function Home () {
                 />
             )}
 
+            <FiltroTarefas />
 
-            <div className='w-3/5 mt-14'>
+            <div className='w-3/5 mt-6'>
                 <TableTarefas listaTarefas={tarefas}
                     editFunction={(tarefa: Tarefa) => {
                         setModalTarefaState({ mode: 'edit', open: true, tarefa: tarefa })

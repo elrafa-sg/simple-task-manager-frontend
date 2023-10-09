@@ -1,6 +1,6 @@
 'use client'
 
-import { addSeconds } from 'date-fns'
+import { addSeconds, parseISO } from 'date-fns'
 import { FaXmark } from 'react-icons/fa6'
 
 import { GoogleAuth } from '@/utils/googleAuth'
@@ -19,7 +19,9 @@ const ModalGoogleAuth = (props: ModalGoogleAuthProps) => {
         googleAuth.askPermission()
             .then(permissionResponse => {
                 LocalStorage.setGoogleCalendarToken(permissionResponse.access_token)
-                LocalStorage.setGoogleCalendarTokenExpiration(addSeconds(new Date(), permissionResponse.expires_in))
+                LocalStorage.setGoogleCalendarTokenExpiration(
+                    parseISO(addSeconds(new Date(), permissionResponse.expires_in).toString())
+                )
                 props.closeFunction()
             })
             .catch(() => {
