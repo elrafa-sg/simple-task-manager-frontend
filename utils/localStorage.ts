@@ -1,33 +1,61 @@
 
 class LocalStorage {
     static setUserToken = (token: string) => {
-        localStorage.setItem("userToken", JSON.stringify(token));
+        if (typeof window !== 'undefined') {
+            localStorage.setItem("userToken", JSON.stringify(token));
+        } else {
+            return null
+        }
     };
 
     static getUSerToken () {
-        return JSON.parse(localStorage.getItem("userToken")!);
+        if (typeof window !== 'undefined') {
+            return JSON.parse(localStorage.getItem("userToken")!);
+        } else {
+            return null
+        }
     };
 
     static setGoogleCalendarToken (token: string) {
-        localStorage.setItem("googleCalendarToken", JSON.stringify(token));
+        if (typeof window !== 'undefined') {
+            localStorage.setItem("googleCalendarToken", JSON.stringify(token));
+        } else {
+            return null
+        }
     }
 
     static getGoogleCalendarToken () {
-        return JSON.parse(localStorage.getItem("googleCalendarToken")!);
+        if (typeof window !== 'undefined') {
+            return JSON.parse(localStorage.getItem("googleCalendarToken")!);
+        } else {
+            return null
+        }
     }
 
     static setGoogleCalendarTokenExpiration (dataExpiracao: Date) {
-        localStorage.setItem("googleCalendarTokenExpiration", JSON.stringify(dataExpiracao));
+        if (typeof window !== 'undefined') {
+            localStorage.setItem("googleCalendarTokenExpiration", JSON.stringify(dataExpiracao));
+        } else {
+            return null
+        }
     }
 
     static getGoogleCalendarTokenExpiration () {
-        return JSON.parse(localStorage.getItem("googleCalendarTokenExpiration")!);
+        if (typeof window !== 'undefined') {
+            return JSON.parse(localStorage.getItem("googleCalendarTokenExpiration")!);
+        } else {
+            return null
+        }
     }
 
     static clearTokens () {
-        localStorage.removeItem("userToken");
-        localStorage.removeItem("googleCalendarToken");
-        localStorage.removeItem("googleCalendarTokenExpiration")
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem("userToken");
+            localStorage.removeItem("googleCalendarToken");
+            localStorage.removeItem("googleCalendarTokenExpiration")
+        } else {
+            return null
+        }
     };
 
 }
