@@ -82,7 +82,7 @@ const ModalTarefa = (props: ModalTarefaProps) => {
                     <div className='flex flex-col'>
                         <div className='flex items-center justify-between gap-2'>
                             <label htmlFor='inputVencimento' className='font-bold text-black'>Vencimento:</label>
-                            <input name='inputVencimento' type='datetime-local' className='w-60 outline-none bg-slate-50 text-slate-800 p-2 rounded-sm shadow-sm'
+                            <input name='inputVencimento' type='date' className='w-60 outline-none bg-slate-50 text-slate-800 p-2 rounded-sm shadow-sm'
                                 value={format(new Date(tarefa.vencimento), 'yyyy-MM-dd hh:mm')}
                                 onChange={(e) => setTarefa({ ...tarefa, vencimento: new Date(e.target.value) })}
                             />
