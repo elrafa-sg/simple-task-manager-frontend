@@ -7,7 +7,7 @@ const FiltroTarefas = () => {
     const searchParams = useSearchParams()
     const [dataInicial, setDataInicial] = useState('')
     const [dataFinal, setDataFinal] = useState('')
-    const [prioridade, setPrioridade] = useState('todas')
+    const [prioridade, setPrioridade] = useState('')
 
     const prioridades = [
         { value: '', label: 'todas' },

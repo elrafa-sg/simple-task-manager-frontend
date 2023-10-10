@@ -35,7 +35,7 @@ class GoogleAuth {
             googleTokenValido = false
         }
         else {
-            if (compareAsc(dataAtual, parseISO(dataExpiracao)) == 1) {
+            if (compareAsc(dataAtual, dataExpiracao) == 1) {
                 googleTokenValido = false
             }
         }

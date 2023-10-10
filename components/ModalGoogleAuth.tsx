@@ -20,7 +20,7 @@ const ModalGoogleAuth = (props: ModalGoogleAuthProps) => {
             .then(permissionResponse => {
                 LocalStorage.setGoogleCalendarToken(permissionResponse.access_token)
                 LocalStorage.setGoogleCalendarTokenExpiration(
-                    parseISO(addSeconds(new Date(), permissionResponse.expires_in).toString())
+                    parseISO(addSeconds(new Date(), permissionResponse.expires_in).toISOString())
                 )
                 props.closeFunction()
             })
