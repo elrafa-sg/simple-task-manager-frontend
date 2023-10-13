@@ -14,6 +14,8 @@ import { ModalGoogleAuth } from '@/components/ModalGoogleAuth';
 import { GoogleAuth } from '@/utils/googleAuth';
 import { TarefaService } from '@/services/TarefaService';
 import { Tarefa } from '@/models/Tarefa';
+import { LocalStorage } from '@/utils/localStorage';
+import { addSeconds, parseISO } from 'date-fns';
 
 interface ModalTarefaState {
     mode: 'create' | 'edit',
@@ -96,9 +98,9 @@ export default function Home () {
         loadListaTarefas()
     }, [loadListaTarefas])
 
-    async function validarGoogleToken () {
+    function validarGoogleToken () {
         const googleAuth = new GoogleAuth()
-        const googleTokenValido = await googleAuth.googleTokenValido()
+        const googleTokenValido = googleAuth.googleTokenValido()
         if (!googleTokenValido) {
             setModalGoogleAuthOpen(true)
         }
@@ -115,7 +117,6 @@ export default function Home () {
                     <div className='w-full bg-slate-800 h-16 flex items-center pl-10'>
                         <h2 className='font-mono font-bold text-lg'>APPBAR TEMPORARIA</h2>
                     </div>
-
                     {toastState.open && (
                         <Toast message={toastState.message} type={toastState.type}
                             closeFunction={() => setToastState({ ...toastState, open: false })}

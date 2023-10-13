@@ -25,7 +25,7 @@ class GoogleAuth {
         };
     }
 
-    async googleTokenValido (): Promise<boolean> {
+    googleTokenValido (): boolean {
         let googleTokenValido = true
 
         const dataAtual = new Date()
@@ -35,7 +35,7 @@ class GoogleAuth {
             googleTokenValido = false
         }
         else {
-            if (compareAsc(dataAtual, dataExpiracao) == 1) {
+            if (compareAsc(dataAtual, new Date(dataExpiracao)) == 1) {
                 googleTokenValido = false
             }
         }
