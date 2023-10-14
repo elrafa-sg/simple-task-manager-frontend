@@ -28,8 +28,8 @@ const TableTarefas = (props: TableTarefasProps) => {
                     <tr key={tarefa.id}>
                         <td className='p-2 font-mono text-black border border-black'>{tarefa.titulo}</td>
                         <td className='p-2 font-mono text-black border border-black'>{tarefa.descricao}</td>
-                        <td className='p-2 font-mono text-black border border-black'>
-                            {format(new Date(tarefa.vencimento), 'dd/MM/yyyy hh:mm')}
+                        <td className='p-2 font-mono text-black border border-black text-center'>
+                            {format(new Date(tarefa.vencimento), 'dd/MM/yyyy')}
                         </td>
                         <td className='p-2 font-mono text-black border border-black text-center'>{tarefa.prioridade}</td>
                         <td className='border border-black'>
