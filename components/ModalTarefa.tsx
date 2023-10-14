@@ -45,7 +45,7 @@ const ModalTarefa = (props: ModalTarefaProps) => {
             <div className='absolute z-50 w-1/2 max-w-sm bg-slate-200 shadow-lg mt-20'>
                 {/* HEADER */}
                 <div className='bg-slate-800 flex justify-between p-2'>
-                    <h2 className='text-lg text-white'>MODAL TAREFAS</h2>
+                    <h2 className='text-lg text-white'>{props.mode == 'create' ? 'Cadastrar' : 'Atualizar'} Tarefa</h2>
                     <button onClick={() => props.closeFunction()}>
                         <FaXmark size={26} className='text-red-600 hover:text-red-700' />
                     </button>
