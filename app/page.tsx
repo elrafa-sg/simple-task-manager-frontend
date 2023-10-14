@@ -6,6 +6,7 @@ import { FormLogin } from '@/components/FormLogin'
 import { Toast, ToastType } from '@/components/Toast'
 import { UsuarioService } from '@/services/UsuarioService'
 import { LocalStorage } from '@/utils/localStorage'
+import { Loading } from '@/components/Loading'
 
 interface ToastState {
   type: ToastType,
@@ -16,14 +17,17 @@ interface ToastState {
 
 export default function Index () {
   const [toastState, setToastState] = useState<ToastState>({ type: ToastType.success, open: false, message: '', timeout: 3500 })
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   async function tryLogin (email: string, senha: string) {
+    setIsLoading(true)
     const apiResponse = await UsuarioService.login(email, senha)
     if (apiResponse.status == 200) {
       LocalStorage.setUserToken(apiResponse.data.access_token)
       router.push('/home')
     } else {
+      setIsLoading(false)
       setToastState({
         open: true,
         message: apiResponse?.data.message,
@@ -41,7 +45,14 @@ export default function Index () {
         />
       )}
 
-      <FormLogin loginFunction={tryLogin} />
+      {
+        isLoading ? (
+          <Loading />
+        )
+          : (
+            <FormLogin loginFunction={tryLogin} />
+          )
+      }
     </main>
   )
 }
