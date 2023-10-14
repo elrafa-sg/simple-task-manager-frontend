@@ -1,5 +1,13 @@
 import { useEffect } from 'react'
 
+
+interface ToastState {
+    type: ToastType,
+    open: boolean,
+    message: string,
+    timeout: number
+}
+
 enum ToastType {
     'success',
     'danger',
@@ -53,4 +61,4 @@ const Toast = (props: ToastProps) => {
     )
 }
 
-export { Toast, type ToastProps, ToastType }
+export { Toast, type ToastProps, ToastType, type ToastState }
