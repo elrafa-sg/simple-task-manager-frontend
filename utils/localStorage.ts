@@ -2,7 +2,7 @@
 class LocalStorage {
     static setUserToken = (token: string) => {
         if (typeof window !== 'undefined') {
-            localStorage.setItem("userToken", JSON.stringify(token));
+            localStorage.setItem("userToken", token);
         } else {
             return null
         }
@@ -10,7 +10,7 @@ class LocalStorage {
 
     static getUSerToken () {
         if (typeof window !== 'undefined') {
-            return JSON.parse(localStorage.getItem("userToken")!);
+            return localStorage.getItem("userToken");
         } else {
             return null
         }
@@ -18,7 +18,7 @@ class LocalStorage {
 
     static setGoogleCalendarToken (token: string) {
         if (typeof window !== 'undefined') {
-            localStorage.setItem("googleCalendarToken", JSON.stringify(token));
+            localStorage.setItem("googleCalendarToken", token);
         } else {
             return null
         }
@@ -26,15 +26,15 @@ class LocalStorage {
 
     static getGoogleCalendarToken () {
         if (typeof window !== 'undefined') {
-            return JSON.parse(localStorage.getItem("googleCalendarToken")!);
+            return localStorage.getItem("googleCalendarToken");
         } else {
             return null
         }
     }
 
-    static setGoogleCalendarTokenExpiration (dataExpiracao: Date) {
+    static setGoogleCalendarTokenExpiration (dataExpiracao: string) {
         if (typeof window !== 'undefined') {
-            localStorage.setItem("googleCalendarTokenExpiration", JSON.stringify(dataExpiracao));
+            localStorage.setItem("googleCalendarTokenExpiration", dataExpiracao);
         } else {
             return null
         }
@@ -42,7 +42,7 @@ class LocalStorage {
 
     static getGoogleCalendarTokenExpiration () {
         if (typeof window !== 'undefined') {
-            return JSON.parse(localStorage.getItem("googleCalendarTokenExpiration")!);
+            return localStorage.getItem("googleCalendarTokenExpiration")
         } else {
             return null
         }

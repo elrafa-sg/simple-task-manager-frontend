@@ -1,8 +1,8 @@
-# Simple Task FrontEnd
+# Simple Task Manager FrontEnd
 
 ## Descrição:
 
-Frontend do gerenciador de tarefas integrado ao google calendar.
+Frontend do [gerenciador de tarefas integrado ao google calendar](https://github.com/elrafa-sg/simple-task-manager-backend).
 
 ##### Tecnologias utilizadas:
 
