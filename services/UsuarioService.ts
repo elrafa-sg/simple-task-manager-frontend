@@ -14,7 +14,8 @@ class UsuarioService {
         }
     }
 
-    static async signup (nome: string, email: string, senha: string) {
+    static async signup (userData: { nome: string, email: string, senha: string }) {
+        const { nome, email, senha } = userData
         try {
             const apiResponse = await apiClient.post(`${BASE_PATH}/signup`, { nome, email, senha })
             return apiResponse
