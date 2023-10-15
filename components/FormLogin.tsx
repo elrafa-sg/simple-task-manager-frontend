@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react'
 import usuarioSchema from '@/validators/usuarioSchema'
 
 interface FormLoginProps {
-    loginFunction: Function
+    loginFunction: any
 }
 
 const FormLogin = (props: FormLoginProps) => {
@@ -18,7 +18,7 @@ const FormLogin = (props: FormLoginProps) => {
                 .required({ email: true, senha: true })
                 .parse({ email, senha });
 
-            props.loginFunction(email, senha);
+            props.loginFunction.mutate({ email, senha });
         } catch (zodError: any) {
             if (zodError.issues.length > 0) {
                 const errorsList = zodError.issues.map((validation: any) => (
