@@ -8,6 +8,7 @@ Frontend do [gerenciador de tarefas integrado ao google calendar](https://github
 
 - Next.js
 - React
+- React Query
 - Axios
 - Tailwind CSS
 - TypeScript
