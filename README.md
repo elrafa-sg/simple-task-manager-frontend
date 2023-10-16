@@ -7,12 +7,13 @@ Frontend do [gerenciador de tarefas integrado ao google calendar](https://github
 ##### Tecnologias utilizadas:
 
 - Next.js
+- TypeScript
 - React
 - React Query
 - Axios
-- Tailwind CSS
-- TypeScript
+- React Hook Form
 - Zod
+- Tailwind CSS
 
 ## Como usar:
 
