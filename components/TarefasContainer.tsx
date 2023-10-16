@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation';
 import { FaCirclePlus } from 'react-icons/fa6'
 
-import useAuth from '@/hooks/useAuth';
-
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { FiltroTarefas } from '@/components/FiltroTarefas';
 import { TableTarefas } from '@/components/TableTarefas';
@@ -16,6 +14,7 @@ import { GoogleAuth } from '@/utils/googleAuth';
 import { TarefaService } from '@/services/TarefaService';
 import { Tarefa } from '@/models/Tarefa';
 import { Appbar } from '@/components/Appbar';
+import { Loading } from './Loading';
 
 interface ModalTarefaState {
     mode: 'create' | 'edit',
@@ -24,7 +23,6 @@ interface ModalTarefaState {
 }
 
 const TarefasContainer = () => {
-    const { isAuthenticated } = useAuth()
     const searchParams = useSearchParams()
 
     const [modalTarefaState, setModalTarefaState] = useState<ModalTarefaState>({ mode: 'create', open: false })
@@ -46,7 +44,53 @@ const TarefasContainer = () => {
     }
 
     const queryTarefas = useQuery({
+        queryKey: ['tarefas'],
         queryFn: getListaTarefas
+    })
+
+    const createTarefaMutation = useMutation({
+        mutationKey: ['createTarefa'],
+        mutationFn: (tarefa: Tarefa) => {
+            return TarefaService.criarTarefa(tarefa)
+        },
+        onSuccess: (apiResponse) => {
+            if (apiResponse.status == 200) {
+                setModalTarefaState({ ...modalTarefaState, open: false })
+                showToast('Tarefa criada com sucesso!', ToastType.success)
+            }
+            else {
+                showToast(apiResponse.data.message, ToastType.danger)
+            }
+        }
+    })
+
+    const updateTarefaMutation = useMutation({
+        mutationFn: (tarefa: Tarefa) => {
+            return TarefaService.atualizarTarefa(tarefa)
+        },
+        onSuccess: (apiResponse) => {
+            if (apiResponse.status == 200) {
+                setModalTarefaState({ ...modalTarefaState, open: false })
+                showToast('Tarefa atualizada com sucesso!', ToastType.success)
+            }
+            else {
+                showToast(apiResponse.data.message, ToastType.danger)
+            }
+        }
+    })
+
+    const deleteTarefaMutation = useMutation({
+        mutationFn: (tarefa: Tarefa) => {
+            return TarefaService.deletarTarefa(tarefa)
+        },
+        onSuccess: (apiResponse) => {
+            if (apiResponse.status == 200) {
+                showToast(`Tarefa deletada com sucesso!`, ToastType.success)
+            }
+            else {
+                showToast(apiResponse?.data.message, ToastType.danger)
+            }
+        }
     })
 
     function showToast (message: string, type: ToastType) {
@@ -57,36 +101,18 @@ const TarefasContainer = () => {
         })
     }
 
-    async function confirmFunction (tarefa: Tarefa, mode: string) {
-        let apiResponse: any = null
-
+    function confirmFunction (tarefa: Tarefa, mode: string) {
         switch (mode) {
             case 'edit':
-                apiResponse = await TarefaService.atualizarTarefa(tarefa)
+                updateTarefaMutation.mutate(tarefa)
                 break
             case 'create':
-                apiResponse = await TarefaService.criarTarefa(tarefa)
-        }
-
-        if (apiResponse?.status == 200) {
-            setModalTarefaState({ ...modalTarefaState, open: false })
-            showToast(`Tarefa ${mode == 'create' ? 'criada' : 'atualizada'} com sucesso!`, ToastType.success)
-            loadListaTarefas()
-        }
-        else {
-            showToast(apiResponse?.data.message, ToastType.danger)
+                createTarefaMutation.mutate(tarefa)
         }
     }
 
-    async function deleteFunction (tarefa: Tarefa) {
-        const apiResponse = await TarefaService.deletarTarefa(tarefa)
-        if (apiResponse.status == 200) {
-            showToast(`Tarefa deletada com sucesso!`, ToastType.success)
-            loadListaTarefas()
-        }
-        else {
-            showToast(apiResponse?.data.message, ToastType.danger)
-        }
+    function deleteFunction (tarefa: Tarefa) {
+        deleteTarefaMutation.mutate(tarefa)
     }
 
     function validarGoogleToken () {
@@ -105,11 +131,13 @@ const TarefasContainer = () => {
         queryTarefas.refetch()
     }, [queryTarefas, searchParams])
 
-
     return (
         <div className="flex flex-col min-h-screen items-center bg-slate-200 w-screen overflow-hidden">
-            {isAuthenticated
+            {queryTarefas.isLoading
                 ? (
+                    <Loading />
+                )
+                : (
                     <>
                         <Appbar />
                         {toastState.open && (
@@ -151,11 +179,6 @@ const TarefasContainer = () => {
                             )
                         }
                     </>
-                )
-                : (
-                    <section className="flex min-h-screen justify-center items-center bg-slate-200 w-screen overflow-hidden">
-                        <p className='text-black font-bold'>Verificando autenticação do usuário...</p>
-                    </section>
                 )
             }
         </div>
