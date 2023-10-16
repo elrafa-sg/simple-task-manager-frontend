@@ -13,13 +13,12 @@ interface ListarTarefasFilter {
 class TarefaService {
     static async listarTarefas (filter: ListarTarefasFilter) {
         const { dataInicial, dataFinal, prioridade } = filter
-        return apiClient.get(`${BASE_PATH}?dataInicial=${dataInicial}&dataFinal=${dataFinal}&prioridade=${prioridade}`)
-            .then(apiResponse => {
-                return apiResponse
-            })
-            .catch(apiResponseError => {
-                return apiResponseError.response
-            })
+        try {
+            const apiResponse = await apiClient.get(`${BASE_PATH}?dataInicial=${dataInicial}&dataFinal=${dataFinal}&prioridade=${prioridade}`)
+            return apiResponse
+        } catch (apiResponseError: any) {
+            return apiResponseError.response
+        }
     }
 
     static async deletarTarefa (tarefa: Tarefa) {
