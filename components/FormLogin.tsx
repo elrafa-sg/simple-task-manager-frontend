@@ -33,6 +33,7 @@ const FormLogin = (props: FormLoginProps) => {
                 <label htmlFor="inputSenha" className='text-white text-lg font-bold font-mono'>Senha:</label>
                 <input type='password'
                     className='outline-none bg-slate-50 text-slate-800 p-2 rounded-sm shadow-sm'
+                    aria-invalid={errors.senha ? "true" : "false"}
                     {...register('senha')}
                 />
                 {errors.senha && (
