@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { ZodError, z } from 'zod'
 
 const tarefaSchema = z.object({
     titulo: z.string()
@@ -7,7 +7,14 @@ const tarefaSchema = z.object({
     descricao: z.string()
         .min(10, { message: 'A descrição deve ter no mínimo 10 caracteres.' })
         .max(255, { message: 'A descrição deve ter no máximo 255 caracteres.' }),
-    vencimento: z.date({ coerce: true }).min(new Date(), { message: 'O vencimento deve ser maior que a data atual.' }),
+    vencimento: z.coerce
+        .date({
+            errorMap: ((error: any, defaultError: any) => {
+                if (error.code == 'invalid_date') return { message: 'Data inválida!' }
+                else return { message: defaultError }
+            })
+        })
+        .min(new Date(), { message: 'O vencimento deve ser maior que a data atual.' }),
     prioridade: z.enum(['baixa', 'media', 'alta'])
 })
 
