@@ -127,10 +127,6 @@ const TarefasContainer = () => {
         validarGoogleToken()
     }, [])
 
-    useEffect(() => {
-        queryTarefas.refetch()
-    }, [queryTarefas, searchParams])
-
     return (
         <div className="flex flex-col min-h-screen items-center bg-slate-200 w-screen overflow-hidden">
             {queryTarefas.isLoading
